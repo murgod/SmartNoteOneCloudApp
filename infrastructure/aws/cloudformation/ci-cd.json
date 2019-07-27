@@ -1,0 +1,233 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters":{
+        "AccTag":{
+            "Type":"String"
+        },
+        "circleciusername":{
+            "Type":"String"
+        },
+        "deploybucket":{
+          "Type":"String"
+        },
+        "attachmentbucket":{
+          "Type":"String"
+        }
+    },
+    "Resources":{
+        "circleciec2ami":{
+            "Type":"AWS::IAM::ManagedPolicy",
+            "Properties":{
+                "ManagedPolicyName" : "circleci-ec2-ami",
+                "Users":[{"Ref":"circleciusername"}],
+                "PolicyDocument":{
+                    "Version" : "2012-10-17",
+                    "Statement":[{
+                        "Effect": "Allow",
+                        "Action" : [
+                            "ec2:AttachVolume",
+                            "ec2:AuthorizeSecurityGroupIngress",
+                            "ec2:CopyImage",
+                            "ec2:CreateImage",
+                            "ec2:CreateKeypair",
+                            "ec2:CreateSecurityGroup",
+                            "ec2:CreateSnapshot",
+                            "ec2:CreateTags",
+                            "ec2:CreateVolume",
+                            "ec2:DeleteKeyPair",
+                            "ec2:DeleteSecurityGroup",
+                            "ec2:DeleteSnapshot",
+                            "ec2:DeleteVolume",
+                            "ec2:DeregisterImage",
+                            "ec2:DescribeImageAttribute",
+                            "ec2:DescribeImages",
+                            "ec2:DescribeInstances",
+                            "ec2:DescribeRegions",
+                            "ec2:DescribeSecurityGroups",
+                            "ec2:DescribeSnapshots",
+                            "ec2:DescribeSubnets",
+                            "ec2:DescribeTags",
+                            "ec2:DescribeVolumes",
+                            "ec2:DetachVolume",
+                            "ec2:GetPasswordData",
+                            "ec2:ModifyImageAttribute",
+                            "ec2:ModifyInstanceAttribute",
+                            "ec2:ModifySnapshotAttribute",
+                            "ec2:RegisterImage",
+                            "ec2:RunInstances",
+                            "ec2:StopInstances",
+                            "ec2:TerminateInstances"
+                        ],
+                        "Resource" : "*"
+                    }]
+                }
+            }
+        },
+        "CodeDeployEC2S3":{
+            "Type":"AWS::IAM::ManagedPolicy",
+            "Properties":{
+                "ManagedPolicyName" : "CodeDeploy-EC2-S3",
+		            "PolicyDocument":{
+                    "Version" : "2012-10-17",
+                    "Statement":[{
+                        "Action":[
+                            "s3:Get*",
+                            "s3:List*"
+                        ],
+                        "Effect":"Allow",
+                        "Resource" : [{
+                            "Fn::Join":["",["arn:aws:s3:::",{"Ref":"deploybucket"},"/*"]]
+                            }]
+                    }
+                    ]
+                }
+            }
+        },
+        "CircleCIUploadToS3":{
+            "Type":"AWS::IAM::ManagedPolicy",
+            "Properties":{
+                "ManagedPolicyName" : "CircleCI-Upload-To-S3",
+                "Users":[{"Ref":"circleciusername"}],
+                "PolicyDocument":{
+                    "Version" : "2012-10-17",
+                    "Statement":[{
+                        "Action":[
+                            "s3:PutObject"
+                        ],
+                        "Effect":"Allow",
+                        "Resource" : [{
+                            "Fn::Join":["",["arn:aws:s3:::",{"Ref":"deploybucket"},"/*"]]
+                        }]
+                    }]
+                }
+            }
+
+        },
+
+        "CirlceCICodeDeploy":{
+            "Type":"AWS::IAM::ManagedPolicy",
+            "Properties":{
+                "ManagedPolicyName" : "CirlceCI-Code-Deploy",
+                "Users":[{"Ref":"circleciusername"}],
+                "PolicyDocument":{
+                    "Version" : "2012-10-17",
+                    "Statement":[{
+                        "Action":[
+                            "codedeploy:RegisterApplicationRevision",
+                            "codedeploy:GetApplicationRevision"
+                        ],
+                        "Effect":"Allow",
+                        "Resource" : [{"Fn::Join": [ "", ["arn:aws:codedeploy:us-east-1:", {"Ref": "AccTag"},":application:csye6225-webapp"]]} ]
+                    },
+                    {
+                        "Action":[
+                            "codedeploy:CreateDeployment",
+                            "codedeploy:GetDeployment"
+                        ],
+                        "Effect":"Allow",
+                        "Resource" : "*"
+                    },
+                    {
+                        "Action":[
+                            "codedeploy:GetDeploymentConfig"
+                        ],
+                        "Effect":"Allow",
+                        "Resource" : [
+                            {"Fn::Join": [ "", ["arn:aws:codedeploy:us-east-1:", {"Ref": "AccTag"},":deploymentconfig:CodeDeployDefault.OneAtATime"]]},
+                            {"Fn::Join": [ "", ["arn:aws:codedeploy:us-east-1:", {"Ref": "AccTag"},":deploymentconfig:CodeDeployDefault.HalfAtATime"]]},
+                            {"Fn::Join": [ "", ["arn:aws:codedeploy:us-east-1:", {"Ref": "AccTag"},":deploymentconfig:CodeDeployDefault.AllAtOnce"]]}
+                        ]
+                    }
+
+                    ]
+                }
+            }
+
+        },
+
+        "s3Bucketcodedeploy" : {
+            "Type" : "AWS::S3::Bucket",
+            "Properties" : {
+                "BucketName" :{"Ref":"deploybucket"}
+            }
+        },
+
+        "CodeDeployEC2ServiceRole":{
+            "Type":"AWS::IAM::Role",
+            "Properties":{
+                "RoleName":"CodeDeployEC2ServiceRole",
+                "ManagedPolicyArns":[
+               {
+                  "Ref":"CodeDeployEC2S3"
+               },
+               {
+                  "Ref":"AccessAttachmentToS3Bucket"
+               },
+               "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+               "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
+            ],
+                "AssumeRolePolicyDocument":{
+                    "Version" : "2012-10-17",
+                    "Statement": [ {
+                    "Effect": "Allow",
+                    "Principal": {
+                    "Service": [ "ec2.amazonaws.com" ]
+                  },
+                    "Action": [ "sts:AssumeRole" ]
+                    } ]
+                }
+            }
+        },
+
+        "CodeDeployServiceRole":{
+            "Type":"AWS::IAM::Role",
+            "Properties":{
+                "RoleName":"CodeDeployServiceRole",
+                "AssumeRolePolicyDocument":{
+                    "Version" : "2012-10-17",
+                    "Statement": [ {
+                    "Effect": "Allow",
+                    "Principal": {
+                    "Service": [ "codedeploy.amazonaws.com" ]
+                  },
+                    "Action": [ "sts:AssumeRole" ]
+                    } ]
+                },
+                "ManagedPolicyArns":[
+                    "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+                    ]
+            }
+        },
+        "ec2instanceprofile":{
+            "Type":"AWS::IAM::InstanceProfile",
+            "Properties":{
+                "InstanceProfileName": "CodeDeployEC2ServiceRoleProfile",
+                "Roles":[
+                    {"Ref":"CodeDeployEC2ServiceRole"}
+                ]
+            }
+        },
+        "AccessAttachmentToS3Bucket":{
+            "Type":"AWS::IAM::ManagedPolicy",
+            "Properties":{
+                "ManagedPolicyName" : "Access-Attachment-To-S3-Bucket",
+                "Description":"Policy for uploading attachments into S3",
+		            "PolicyDocument":{
+                    "Version" : "2012-10-17",
+                    "Statement":[{
+                        "Action":[
+                            "s3:Get*",
+                            "s3:List*",
+                            "s3:Delete*",
+                            "s3:Put*"
+                        ],
+                        "Effect":"Allow",
+                        "Resource" : [{
+                            "Fn::Join":["",["arn:aws:s3:::",{"Ref":"attachmentbucket"},"/*"]]
+                        }]
+                    }]
+                }
+            }
+        }
+    }
+}
