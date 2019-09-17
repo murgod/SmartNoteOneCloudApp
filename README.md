@@ -1,4 +1,4 @@
-# CSYE 6225 - Spring 2019
+# SmartNoteOne
 
 
 ## Technology Stack
