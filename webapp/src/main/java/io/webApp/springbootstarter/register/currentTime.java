@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Current time generator class
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public class currentTime {

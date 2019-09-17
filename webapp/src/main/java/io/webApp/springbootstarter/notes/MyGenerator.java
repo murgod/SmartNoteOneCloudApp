@@ -11,7 +11,7 @@ import org.hibernate.id.IdentifierGenerator;
  * Random Unique Identifier ID generator class, implements IdentifierGenerator
  * class
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public class MyGenerator implements IdentifierGenerator {

@@ -3,7 +3,7 @@ package io.webApp.springbootstarter.attachments;
 /**
  * MetaData class object for attachments
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public class metaData {

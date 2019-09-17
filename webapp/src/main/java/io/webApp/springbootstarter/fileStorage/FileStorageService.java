@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * File storage service interface class
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public interface FileStorageService {

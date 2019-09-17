@@ -11,7 +11,7 @@ import io.webApp.springbootstarter.attachments.attachmentRepository;
 /**
  * Attachment table class with helper functions
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 @Service

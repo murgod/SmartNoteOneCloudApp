@@ -9,7 +9,7 @@ import io.webApp.springbootstarter.notes.Note;
 /**
  * Interface class for Note table, inherits JpaRepository.
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public interface NoteRepository extends JpaRepository<Note, String> {

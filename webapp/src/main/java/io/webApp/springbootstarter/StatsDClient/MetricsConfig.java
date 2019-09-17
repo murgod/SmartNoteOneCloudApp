@@ -11,7 +11,7 @@ import com.timgroup.statsd.NoOpStatsDClient;
 /**
  * Metric collection client class with StatsDClient
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 @Configuration

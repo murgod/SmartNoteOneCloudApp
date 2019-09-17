@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Interface class for user register table, inherits JpaRepository.
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public interface UserRepository extends JpaRepository<register, Integer> {

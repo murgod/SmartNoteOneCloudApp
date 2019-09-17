@@ -7,7 +7,7 @@ import javax.persistence.Query;
 /**
  * Class to create table in DB using SQL query
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public class TableCreation {

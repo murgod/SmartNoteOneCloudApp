@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
  * File storage exception class to throw and print errors, inherits
  * RuntimeException
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public class FileStorageException extends RuntimeException {

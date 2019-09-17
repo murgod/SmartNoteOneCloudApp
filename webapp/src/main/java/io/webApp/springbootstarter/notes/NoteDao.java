@@ -11,7 +11,7 @@ import io.webApp.springbootstarter.notes.NoteRepository;
 /**
  * Note table class with helper functions
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 @Service

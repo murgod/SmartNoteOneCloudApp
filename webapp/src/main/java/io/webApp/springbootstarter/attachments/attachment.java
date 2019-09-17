@@ -22,7 +22,7 @@ import io.webApp.springbootstarter.notes.Note;
 /**
  * Attachment POJO class
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 @Entity

@@ -10,7 +10,7 @@ import io.webApp.springbootstarter.notes.Note;
 /**
  * Interface class for Attachment table, inherits JpaRepository.
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 public interface attachmentRepository extends JpaRepository<attachment, String> {

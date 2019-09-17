@@ -9,7 +9,7 @@ import javax.persistence.Id;
 /**
  * User register POJO class
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 @Entity

@@ -29,7 +29,7 @@ import io.webApp.springbootstarter.attachments.attachment;
 /**
  * Note POJO class
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 @Entity

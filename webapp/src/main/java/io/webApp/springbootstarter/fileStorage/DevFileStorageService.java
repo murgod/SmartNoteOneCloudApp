@@ -33,7 +33,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
  * AWS cloud file storage service class, implements FileStorageService interface
  * class
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 @Service

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * File NOT FOUND exception class, inherits RuntimeException class
  * 
- * @author satishkumaranbalagan
+ * @author akshaypmurgod@gmail.com
  *
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
